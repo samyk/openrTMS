@@ -20,7 +20,7 @@ if(MINGW)
 		glu32
 	)
 
-else(MINGW)
+else()
 
 	add_executable(openrtmscontrol src/Open-rTMS.cpp)
 
@@ -33,7 +33,7 @@ else(MINGW)
 		GLU
 	)
 	
-endif(MINGW)	
+endif()	
 
 file(COPY i18n DESTINATION ${CMAKE_BINARY_DIR})
 file(COPY firmware DESTINATION ${CMAKE_BINARY_DIR})
