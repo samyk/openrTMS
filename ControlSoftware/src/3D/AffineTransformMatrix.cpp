@@ -4,7 +4,8 @@
 // Thread Safe        : Yes
 // Platform dependent : No
 // Compiler Options   : -lm
-// Author             : Tobias Schaefer
+// Author             : Tobias Schaefer, Samy Kamkar
+// Updated            : 2020/02/20
 // Created            : 22.07.2009
 // Copyright          : (C) 2009 Tobias Schaefer <tobiassch@users.sourceforge.net>
 // Licence            : GNU General Public License version 3.0 (GPLv3)
@@ -267,7 +268,7 @@ const AffineTransformMatrix AffineTransformMatrix::Inverse() const
 			+ a[2] * a[4]) * a[9] + (a[1] * a[6] + (-a[2] * a[5])) * a[8];
 	// T11 is the determinant of the matrix. This can not
 	// not be zero for a correct transformation matrix.
-	wxASSERT(T11!=0)
+	wxASSERT(T11!=0);
 
 	double T12 = a[4] * a[9];
 	double T13 = a[5] * a[8];
