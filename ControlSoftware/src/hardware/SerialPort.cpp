@@ -1,10 +1,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Name               : SerialPort.cpp
-// Purpose            : A serial port class for Linux and Windows.
+// Purpose            : A serial port class for Linux, Windows, and macOS.
 // Thread Safe        : No
 // Platform dependent : Yes
 // Compiler Options   :
-// Author             : Tobias Schaefer
+// Author             : Tobias Schaefer, Samy Kamkar
+// Updated            : 2020/02/20
 // Created            : 08.09.2002
 // Copyright          : (C) 2002 Tobias Schaefer <tobiassch@users.sourceforge.net>
 // Licence            : GNU General Public License version 3.0 (GPLv3)
@@ -41,7 +42,7 @@ SerialPort::SerialPort()
 #endif
 
 
-#ifdef __LINUX
+#if defined(__LINUX) || defined(__APPLE)
 	buffer_RD = 0;
 	buffer_WR = 0;
 #endif
@@ -64,7 +65,7 @@ bool SerialPort::Open(int nPort, int nBaud)
 #endif
 
 
-#ifdef __LINUX
+#if defined(__LINUX) || defined(__APPLE)
 	if(nPort < 1) return false;
 	sprintf(szPort, "/dev/ttyS%1i", nPort - 1);
 	//  sprintf (szPort, "/dev/ttyUSB0");
@@ -126,7 +127,7 @@ bool SerialPort::Open(const char *Port, int nBaud)
 #endif
 
 
-#ifdef __LINUX
+#if defined(__LINUX) || defined(__APPLE)
 
 
 	//  if (nPort < 1)  return false;
@@ -268,7 +269,7 @@ bool SerialPort::Close(void)
 #endif
 
 
-#ifdef __LINUX
+#if defined(__LINUX) || defined(__APPLE)
 
 	oldtio.c_cflag = CLOCAL | CREAD;
 	oldtio.c_cflag |= B0; // sideeffect: DTR turned off
@@ -318,7 +319,7 @@ int SerialPort::SendData(char *buffer, unsigned int size)
 
 	return ((int) dwBytesWritten);
 #endif
-#ifdef __LINUX
+#if defined(__LINUX) || defined(__APPLE)
 	if(!Opened) return 0;
 	int dwBytesWritten = 0;
 
@@ -339,7 +340,7 @@ int SerialPort::ReadDataWaiting(void)
 
 	return ((int) ComStat.cbInQue);
 #endif
-#ifdef __LINUX
+#if defined(__LINUX) || defined(__APPLE)
 	if(!Opened) return 0;
 	//	tcflush(fd,TCIOFLUSH);
 	while((buffer_WR + 1) % BUFFER_LEN != buffer_RD){
@@ -380,7 +381,7 @@ int SerialPort::ReadData(char *buffer, unsigned int limit)
 
 	return ((int) dwBytesRead);
 #endif
-#ifdef __LINUX
+#if defined(__LINUX) || defined(__APPLE)
 
 	if(!Opened) return 0;
 
@@ -418,7 +419,7 @@ void SerialPort::SetDTR(bool activate)
 #endif
 
 
-#ifdef __LINUX
+#if defined(__LINUX) || defined(__APPLE)
 	int dtr_bits = TIOCM_DTR;
 	if(activate){
 		ioctl(fd, TIOCMBIS, &dtr_bits);

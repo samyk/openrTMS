@@ -1,10 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Name               : SerialPort.h
-// Purpose            : A serial port class for Linux and Windows.
+// Purpose            : A serial port class for Linux, Windows, and macOS.
 // Thread Safe        : No
 // Platform dependent : Yes
 // Compiler Options   :
-// Author             : Tobias Schaefer
+// Authors            : Tobias Schaefer, Samy Kamkar
 // Created            : 08.09.2002
 // Copyright          : (C) 2002 Tobias Schaefer <tobiassch@users.sourceforge.net>
 // Licence            : GNU General Public License version 3.0 (GPLv3)
@@ -31,7 +31,7 @@
 #define __SERIALPORT_H__
 
 /*!\class SerialPort
- * \brief Serial port class for Linux and Windows
+ * \brief Serial port class for Linux, Windows, and macOS
  *
  *
  */
@@ -52,8 +52,12 @@
 #define __WIN
 #elif defined(linux) || defined(__linux)
 #define __LINUX
+#define __UNIX
+#elif defined(__APPLE__)
+#define __APPLE
+#define __UNIX
 #else
-#error "Weder Linux noch Windows gefunden!"
+#error "Requires Linux, Windows, or macOS (Weder Linux noch Windows gefunden)!"
 #endif
 
 #ifdef __WIN
@@ -61,6 +65,18 @@
 #endif
 
 #ifdef __LINUX
+#include <stdio.h>
+#include <fcntl.h>
+#include <termios.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
+#define _POSIX_SOURCE 1
+#endif
+
+#ifdef __APPLE
+#include <stddef.h>
+#include <wchar.h>
 #include <stdio.h>
 #include <fcntl.h>
 #include <termios.h>
@@ -107,7 +123,7 @@ protected:
 #endif
 
 
-#ifdef __LINUX
+#if defined(__LINUX) || defined(__APPLE)
 	int fd, c, res;
 	unsigned int buffer_RD, buffer_WR;
 	char m_buffer[BUFFER_LEN];
