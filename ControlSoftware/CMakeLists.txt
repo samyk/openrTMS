@@ -20,6 +20,20 @@ if(MINGW)
 		glu32
 	)
 
+elseif(APPLE)
+
+	find_package(OpenGL REQUIRED)
+	add_executable(openrtmscontrol src/Open-rTMS.cpp)
+
+	target_link_libraries(openrtmscontrol
+		3D
+		gui
+		hardware
+		${wxWidgets_LIBRARIES}
+		${OPENGL_gl_LIBRARY}
+		${OPENGL_glu_LIBRARY}
+	)
+
 else()
 
 	add_executable(openrtmscontrol src/Open-rTMS.cpp)

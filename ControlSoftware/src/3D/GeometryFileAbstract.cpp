@@ -5,6 +5,7 @@
 // Platform dependent : No
 // Compiler Options   :
 // Author             : Tobias Schaefer
+// Updated            : 2020/02/20
 // Created            : 11.06.2011
 // Copyright          : (C) 2011 Tobias Schaefer <tobiassch@users.sourceforge.net>
 // Licence            : GNU General Public License version 3.0 (GPLv3)
@@ -30,7 +31,11 @@
 
 #include "GeometryFileAbstract.h"
 
+#if defined(__APPLE__)
+#include <OpenGL/gl.h>
+#else
 #include <GL/gl.h>
+#endif
 
 GeometryFileAbstract::GeometryFileAbstract()
 {

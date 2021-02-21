@@ -4,7 +4,8 @@
 // Thread Safe        : Yes
 // Platform dependent : No
 // Compiler Options   :
-// Author             : Tobias Schaefer
+// Author             : Tobias Schaefer, Samy Kamkar
+// Updated            : 2020/02/20
 // Created            : 28.02.2010
 // Copyright          : (C) 2010 Tobias Schaefer <tobiassch@users.sourceforge.net>
 // Licence            : GNU General Public License version 3.0 (GPLv3)
@@ -29,7 +30,13 @@
 
 
 #include "Geometry.h"
+
+#if defined(__APPLE__)
+#include <OpenGL/gl.h>
+#else
 #include <GL/gl.h>
+#endif
+
 #include <wx/log.h>
 
 #include <wx/arrimpl.cpp> // this is a magic incantation which must be done!
